@@ -51,11 +51,13 @@ test('parses films, their showtimes and trailer from the showings HTML fragment'
 
   const movies = await fetchNowPlaying('10', { now: BEFORE_ALL_FIXTURE_SHOWTIMES });
 
-  assert.equal(movies.length, 2, 'the film with no parseable release date is dropped');
+  assert.equal(
+    movies.length,
+    1,
+    'the film with no parseable release date, and the one with no showtime today, are both dropped',
+  );
 
-  const [tad, spiderMan] = movies;
-
-  assert.deepEqual(tad, {
+  assert.deepEqual(movies[0], {
     id: '17489',
     title: "TAD L'EXPLORATEUR ET LA LAMPE MAGIQUE",
     releaseDate: '2026-08-26',
@@ -68,14 +70,14 @@ test('parses films, their showtimes and trailer from the showings HTML fragment'
       { time: '20:15', version: 'VOST' },
     ],
   });
+});
 
-  assert.equal(spiderMan.id, '276608');
-  assert.equal(spiderMan.title, 'Spider-Man: Brand New Day');
-  assert.equal(spiderMan.releaseDate, '2026-07-29');
-  assert.equal(spiderMan.posterUrl, undefined);
-  assert.equal(spiderMan.overview, undefined);
-  assert.equal(spiderMan.trailerUrl, undefined, 'no trailer configured for this film in the mock');
-  assert.equal(spiderMan.showtimes, undefined, 'no screening buttons for this film in the fixture');
+test('drops a film with a release date but no screening button at all in the fragment', async () => {
+  globalThis.fetch = fetchRouter({ showingsHtml: sampleHtml });
+
+  const movies = await fetchNowPlaying('10', { now: BEFORE_ALL_FIXTURE_SHOWTIMES });
+
+  assert.ok(!movies.some((movie) => movie.id === '276608'));
 });
 
 test("requests the given cinema ID and today's date", async () => {
@@ -109,7 +111,7 @@ test('a trailer lookup failure does not drop the movie or fail the batch', async
 
   const movies = await fetchNowPlaying('10', { now: BEFORE_ALL_FIXTURE_SHOWTIMES });
 
-  assert.equal(movies.length, 2);
+  assert.equal(movies.length, 1);
   assert.equal(movies[0].trailerUrl, undefined);
 });
 
@@ -143,12 +145,10 @@ test('drops a showtime that has already passed today, without dropping the movie
   assert.deepEqual(tad.showtimes, [{ time: '20:15', version: 'VOST' }]);
 });
 
-test('omits showtimes entirely once every session for the day has passed', async () => {
+test('drops the movie entirely once every session for the day has passed', async () => {
   globalThis.fetch = fetchRouter({ showingsHtml: sampleHtml });
 
   const movies = await fetchNowPlaying('10', { now: new Date('2026-08-30T23:00:00') });
 
-  const tad = movies.find((movie) => movie.id === '17489');
-
-  assert.equal(tad.showtimes, undefined);
+  assert.ok(!movies.some((movie) => movie.id === '17489'));
 });
