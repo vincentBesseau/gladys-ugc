@@ -45,9 +45,9 @@ gladys.onAction('search_cinemas', async (fields) => {
 gladys.onMoviesGetUpcoming(async () => {
   validateConfig(config);
 
-  logger.info(`onMoviesGetUpcoming <- cinema ${config.cinema_id}, day offset ${config.day_offset}`);
+  logger.info(`onMoviesGetUpcoming <- cinema ${config.cinema_id}`);
 
-  return fetchNowPlaying(config.cinema_id, config.day_offset);
+  return fetchNowPlaying(config.cinema_id);
 });
 
 gladys.onConfigUpdated(async (newConfig) => {

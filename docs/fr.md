@@ -24,22 +24,15 @@ d'accès public que le site utilise déjà pour lui-même.
    `Nom du cinéma — Ville (ID: 10)`.
 3. Copiez l'identifiant numérique du cinéma souhaité dans le champ
    **Identifiant du cinéma**, puis enregistrez.
-4. (Optionnel) Choisissez le **Jour à afficher** — Aujourd'hui, Demain ou
-   Dans 7 jours. La page "à l'affiche" d'ugc.fr est pour un seul jour à la
-   fois : ce réglage ne change pas la période affichée, il change quel jour
-   est lu.
 
-Les films à l'affiche ce jour-là dans ce cinéma apparaissent alors dans le
-widget "Prochaines sorties" du tableau de bord. La date affichée sous chaque
-affiche est la date de sortie officielle du film (pas une séance) : un film
-qui joue depuis plusieurs semaines garde sa date de sortie d'origine.
+Les films actuellement à l'affiche dans ce cinéma apparaissent alors dans le
+widget "Prochaines sorties" du tableau de bord.
 
 ## Limites connues (v1)
 
 - Un seul cinéma à la fois par installation de l'intégration.
-- Un seul jour à la fois (aujourd'hui, demain ou dans 7 jours) : pas de
-  fenêtre glissante ni d'horaires de séances (prévu pour une version
-  future).
+- Uniquement les films à l'affiche aujourd'hui : pas encore d'horaires de
+  séances (prévu pour une version future).
 - La liste des cinémas est une liste statique maintenue à la main (voir le
   README du dépôt) : un nouveau cinéma UGC peut ne pas encore y apparaître.
 
