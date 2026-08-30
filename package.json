@@ -1,14 +1,30 @@
 {
-  "name": "gladys-allocine",
-  "version": "1.0.0",
-  "description": "",
+  "name": "gladys-ugc",
+  "version": "0.1.0",
+  "private": true,
+  "description": "UGC cinema integration for Gladys Assistant: movies currently playing at your UGC cinema.",
+  "type": "module",
   "main": "index.js",
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1"
+    "start": "node index.js",
+    "lint": "eslint .",
+    "format": "prettier --write .",
+    "format:check": "prettier --check .",
+    "test": "node --test"
   },
-  "author": "vincent Besseau",
-  "license": "ISC",
+  "engines": {
+    "node": ">=22"
+  },
   "dependencies": {
-    "scraping-allocine": "^1.0.1"
-  }
+    "@gladysassistant/integration-sdk": "github:vincentBesseau/integration-sdk-js#feature/movies-type",
+    "node-html-parser": "^9.0.2"
+  },
+  "devDependencies": {
+    "@eslint/js": "^10.0.1",
+    "eslint": "^10.9.1",
+    "eslint-config-prettier": "^10.1.8",
+    "globals": "^17.11.0",
+    "prettier": "^3.9.6"
+  },
+  "license": "Apache-2.0"
 }
