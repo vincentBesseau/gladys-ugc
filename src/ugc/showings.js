@@ -209,16 +209,28 @@ export async function fetchNowPlaying(cinemaId, { now = new Date() } = {}) {
   const root = parse(html);
   const blocks = root.querySelectorAll('[id^="bloc-showing-film-"]');
 
-  const movies = blocks.map(parseFilmBlock).filter(Boolean);
-
   const showtimesByFilmId = groupShowtimesByFilmId(root, now);
-  movies.forEach((movie) => {
-    const showtimes = showtimesByFilmId.get(movie.id);
 
-    if (showtimes && showtimes.length > 0) {
+  // ugc.fr's showings fragment can include a film block with no screening
+  // button at all (or none left once today's past sessions are dropped) —
+  // e.g. a title still listed on the page without an actual session today.
+  // Gladys's "now playing" widget should only show films you can actually
+  // go see today, so those are dropped here rather than shown as a poster
+  // with nothing to click on.
+  const movies = blocks
+    .map(parseFilmBlock)
+    .filter(Boolean)
+    .filter((movie) => {
+      const showtimes = showtimesByFilmId.get(movie.id);
+
+      if (!showtimes || showtimes.length === 0) {
+        return false;
+      }
+
       movie.showtimes = showtimes;
-    }
-  });
+
+      return true;
+    });
 
   await attachTrailers(movies);
 

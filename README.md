@@ -48,7 +48,12 @@ One integration per chain, matching how this one is scoped — see
   B.19) — both come from the same page, no extra scraping technique needed.
 - A **Find my cinema** action searches a hand-maintained static list of UGC
   cinemas (there is no dynamic "select" field type in Gladys for anything
-  other than devices — see `docs/fr.md` / `docs/en.md`).
+  other than devices — see `docs/fr.md` / `docs/en.md`). Left empty, it
+  returns the 5 cinemas nearest the Gladys house (`location: true` in the
+  manifest, `gladys.getHouses()`) instead of dumping the full ~50-cinema
+  list — that was the point of a text filter in the first place, but most
+  houses only ever care about the one or two closest to them. Falls back to
+  the full list when no house has a location set.
 
 A day picker (tomorrow, in a week, ...) was tried and reverted: v1 only
 covers today's films and showtimes.
@@ -107,6 +112,18 @@ JSON.stringify(
 
 Then re-derive `postalCode`/`city` from each `address` (last `NNNNN CITY`
 token) and re-sort by postal code, e.g. with a short one-off script.
+
+Each entry also carries a `latitude`/`longitude` (used by `nearestCinemas()`
+in `src/ugc/cinemas.js`), geocoded from `address` — ugc.fr's own cinema list
+page doesn't expose coordinates directly — via France's free, no-key
+[Base Adresse Nationale API](https://api-adresse.data.gouv.fr/search/). A
+mall-style address sometimes gets a low match score; when it does, re-query
+with just `postalCode` + `city` instead (city-center accuracy, still good
+enough to rank cinemas by proximity) and keep whichever result scores
+higher. One entry (UGC Ciné Cité La Défense) needed a manual location fix because
+its address uses a CEDEX-style postal code (`92092`) the geocoder can't
+parse, landing it in the wrong Paris arrondissement instead of Puteaux —
+check any new/changed address against a map after refreshing.
 
 ## Related integrations
 

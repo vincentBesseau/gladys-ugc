@@ -12,6 +12,7 @@
   "categories": ["multimedia"],
   "cover_image": "https://raw.githubusercontent.com/vincentBesseau/gladys-ugc/main/cover.png",
   "transports": ["cloud"],
+  "location": true,
   "config_schema": [
     {
       "key": "intro",
@@ -47,8 +48,8 @@
         "fr": "Trouver mon cinéma"
       },
       "description": {
-        "en": "Leave the field empty to list every UGC cinema, or type a city or postal code to filter.",
-        "fr": "Laissez le champ vide pour lister tous les cinémas UGC, ou saisissez une ville ou un code postal pour filtrer."
+        "en": "Leave the field empty to list the UGC cinemas nearest your Gladys house, or type a city or postal code to search all of them.",
+        "fr": "Laissez le champ vide pour lister les cinémas UGC les plus proches de votre maison Gladys, ou saisissez une ville ou un code postal pour chercher parmi tous les cinémas."
       },
       "timeout_seconds": 15,
       "fields": [
