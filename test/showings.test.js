@@ -2,7 +2,12 @@ import { test, afterEach } from 'node:test';
 import assert from 'node:assert/strict';
 import { readFileSync } from 'node:fs';
 import { fileURLToPath } from 'node:url';
-import { fetchNowPlaying } from '../src/ugc/showings.js';
+import { fetchNowPlaying, isUpcoming } from '../src/ugc/showings.js';
+
+// Both showtimes in the fixture (13:30, 20:15) are in the future relative to
+// this, so the main test below stays deterministic regardless of when it
+// actually runs.
+const BEFORE_ALL_FIXTURE_SHOWTIMES = new Date('2026-08-30T10:00:00');
 
 const realFetch = globalThis.fetch;
 
@@ -44,7 +49,7 @@ test('parses films, their showtimes and trailer from the showings HTML fragment'
     trailersByFilmId: { 17489: 'https://fr.vid.web.acsta.net/nmedia/tad.mp4' },
   });
 
-  const movies = await fetchNowPlaying('10');
+  const movies = await fetchNowPlaying('10', { now: BEFORE_ALL_FIXTURE_SHOWTIMES });
 
   assert.equal(movies.length, 2, 'the film with no parseable release date is dropped');
 
@@ -102,8 +107,48 @@ test('a trailer lookup failure does not drop the movie or fail the batch', async
     return { ok: false, status: 500 };
   };
 
-  const movies = await fetchNowPlaying('10');
+  const movies = await fetchNowPlaying('10', { now: BEFORE_ALL_FIXTURE_SHOWTIMES });
 
   assert.equal(movies.length, 2);
   assert.equal(movies[0].trailerUrl, undefined);
+});
+
+test('isUpcoming', async (t) => {
+  await t.test('keeps a time strictly after now', () => {
+    assert.equal(isUpcoming('20:15', new Date('2026-08-30T10:00:00')), true);
+  });
+
+  await t.test('keeps a time exactly equal to now', () => {
+    assert.equal(isUpcoming('10:00', new Date('2026-08-30T10:00:00')), true);
+  });
+
+  await t.test('drops a time before now', () => {
+    assert.equal(isUpcoming('09:59', new Date('2026-08-30T10:00:00')), false);
+  });
+
+  await t.test('keeps an unparseable value rather than dropping a real session', () => {
+    assert.equal(isUpcoming('not a time', new Date('2026-08-30T10:00:00')), true);
+  });
+});
+
+test('drops a showtime that has already passed today, without dropping the movie itself', async () => {
+  globalThis.fetch = fetchRouter({ showingsHtml: sampleHtml });
+
+  // Between the fixture's two showtimes (13:30, 20:15): the first has
+  // passed, the second hasn't.
+  const movies = await fetchNowPlaying('10', { now: new Date('2026-08-30T15:00:00') });
+
+  const tad = movies.find((movie) => movie.id === '17489');
+
+  assert.deepEqual(tad.showtimes, [{ time: '20:15', version: 'VOST' }]);
+});
+
+test('omits showtimes entirely once every session for the day has passed', async () => {
+  globalThis.fetch = fetchRouter({ showingsHtml: sampleHtml });
+
+  const movies = await fetchNowPlaying('10', { now: new Date('2026-08-30T23:00:00') });
+
+  const tad = movies.find((movie) => movie.id === '17489');
+
+  assert.equal(tad.showtimes, undefined);
 });

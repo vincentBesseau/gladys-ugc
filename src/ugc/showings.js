@@ -42,20 +42,46 @@ function fieldAfterLabel(root, label) {
 }
 
 /**
+ * `movie.showtimes[].time` is a bare "HH:MM" with no date (Gladys core's B.19
+ * contract: the core cannot tell a past session from an upcoming one, so
+ * providers that only ever report "today" — this one — must drop a session
+ * once it has passed themselves). An unparseable value is kept rather than
+ * dropped: better to show an odd time than to silently hide a real session.
+ * @param {string} hhmm
+ * @param {Date} [now]
+ * @returns {boolean}
+ */
+export function isUpcoming(hhmm, now = new Date()) {
+  const match = /^(\d{1,2}):(\d{2})$/.exec(hhmm);
+
+  if (!match) {
+    return true;
+  }
+
+  const [, hours, minutes] = match;
+  const showtime = new Date(now);
+  showtime.setHours(Number(hours), Number(minutes), 0, 0);
+
+  return showtime.getTime() >= now.getTime();
+}
+
+/**
  * Every screening button on the page (`data-filmid`, `data-seancehour`,
  * `data-version`) carries its own film id, regardless of where it sits in
  * the DOM relative to that film's synopsis block — grouping by attribute is
  * simpler and more robust than relying on a specific nesting.
+ * @param {object} root
+ * @param {Date} [now]
  * @returns {Map<string, Array<{time: string, version?: string}>>}
  */
-function groupShowtimesByFilmId(root) {
+function groupShowtimesByFilmId(root, now = new Date()) {
   const showtimesByFilmId = new Map();
 
   root.querySelectorAll('[data-filmid][data-seancehour]').forEach((button) => {
     const filmId = button.getAttribute('data-filmid');
     const time = button.getAttribute('data-seancehour');
 
-    if (!filmId || !time) {
+    if (!filmId || !time || !isUpcoming(time, now)) {
       return;
     }
 
@@ -170,9 +196,11 @@ async function attachTrailers(movies) {
  * Fetch and parse the films currently playing at a UGC cinema, including
  * their showtimes and (best-effort) trailer.
  * @param {string} cinemaId
+ * @param {object} [options]
+ * @param {Date} [options.now] - Overridable for tests; defaults to the real current time.
  * @returns {Promise<Array<{id: string, title: string, releaseDate: string, overview?: string, posterUrl?: string, trailerUrl?: string, sourceUrl: string, showtimes?: Array<{time: string, version?: string}>}>>}
  */
-export async function fetchNowPlaying(cinemaId) {
+export async function fetchNowPlaying(cinemaId, { now = new Date() } = {}) {
   const html = await ugcGet('showingsCinemaAjaxAction!getShowingsForCinemaPage.action', {
     cinemaId,
     date: todayIsoDate(),
@@ -183,7 +211,7 @@ export async function fetchNowPlaying(cinemaId) {
 
   const movies = blocks.map(parseFilmBlock).filter(Boolean);
 
-  const showtimesByFilmId = groupShowtimesByFilmId(root);
+  const showtimesByFilmId = groupShowtimesByFilmId(root, now);
   movies.forEach((movie) => {
     const showtimes = showtimesByFilmId.get(movie.id);
 
