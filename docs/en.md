@@ -18,10 +18,15 @@ itself.
 ## Configuration
 
 1. Open the integration's **Configuration** tab.
-2. Run the **Find my cinema** action: leave the field empty to list every UGC
-   cinema, or type a city / postal code to filter. The result is shown under
-   the button as `Cinema name — City (ID: 10)`.
+2. Run the **Find my cinema** action: leave the field empty to list the 5 UGC
+   cinemas nearest your Gladys house (if it has a location set), or type a
+   city / postal code to search across all of them. The result is shown
+   under the button as `Cinema name — City (12.3 km) (ID: 10)` (the distance
+   only appears for a proximity search).
 3. Copy the numeric ID of your cinema into the **Cinema ID** field, then save.
+
+If no Gladys house has a location set, leaving the field empty lists every
+UGC cinema instead (fallback behavior).
 
 The films currently playing at that cinema then appear in the dashboard's
 "Upcoming Releases" widget. Clicking a poster opens the film's detail card,

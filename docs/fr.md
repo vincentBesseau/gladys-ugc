@@ -19,11 +19,16 @@ d'accès public que le site utilise déjà pour lui-même.
 
 1. Ouvrez l'onglet **Configuration** de l'intégration.
 2. Lancez l'action **Trouver mon cinéma** : laissez le champ vide pour lister
-   tous les cinémas UGC, ou tapez une ville / un code postal pour filtrer.
-   Le résultat s'affiche sous le bouton, au format
-   `Nom du cinéma — Ville (ID: 10)`.
+   les 5 cinémas UGC les plus proches de votre maison Gladys (si sa position
+   est renseignée), ou tapez une ville / un code postal pour chercher parmi
+   tous les cinémas. Le résultat s'affiche sous le bouton, au format
+   `Nom du cinéma — Ville (12.3 km) (ID: 10)` (la distance n'apparaît que
+   pour une recherche par proximité).
 3. Copiez l'identifiant numérique du cinéma souhaité dans le champ
    **Identifiant du cinéma**, puis enregistrez.
+
+Si aucune maison Gladys n'a de position renseignée, laisser le champ vide
+liste tous les cinémas UGC (comportement de repli).
 
 Les films actuellement à l'affiche dans ce cinéma apparaissent alors dans le
 widget "Prochaines sorties" du tableau de bord. En cliquant sur une affiche,
