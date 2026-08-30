@@ -37,6 +37,43 @@
         "fr": "L'identifiant numérique affiché par l'action \"Trouver mon cinéma\", par ex. 10."
       },
       "required": true
+    },
+    {
+      "key": "day_offset",
+      "type": "select",
+      "label": {
+        "en": "Day to show",
+        "fr": "Jour à afficher"
+      },
+      "description": {
+        "en": "ugc.fr's own \"now playing\" page is for a single day: pick which one this integration reads.",
+        "fr": "La page \"à l'affiche\" d'ugc.fr est pour un seul jour : choisissez lequel cette intégration doit lire."
+      },
+      "default": "0",
+      "required": false,
+      "options": [
+        {
+          "value": "0",
+          "label": {
+            "en": "Today",
+            "fr": "Aujourd'hui"
+          }
+        },
+        {
+          "value": "1",
+          "label": {
+            "en": "Tomorrow",
+            "fr": "Demain"
+          }
+        },
+        {
+          "value": "7",
+          "label": {
+            "en": "In 7 days",
+            "fr": "Dans 7 jours"
+          }
+        }
+      ]
     }
   ],
   "actions": [

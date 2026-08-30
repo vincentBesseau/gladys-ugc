@@ -22,15 +22,20 @@ itself.
    cinema, or type a city / postal code to filter. The result is shown under
    the button as `Cinema name — City (ID: 10)`.
 3. Copy the numeric ID of your cinema into the **Cinema ID** field, then save.
+4. (Optional) Pick a **Day to show** — Today, Tomorrow or In 7 days.
+   ugc.fr's own "now playing" page is for a single day at a time: this
+   doesn't widen the window, it changes which day gets read.
 
-The films currently playing at that cinema then appear in the dashboard's
-"Upcoming Releases" widget.
+The films playing that day at that cinema then appear in the dashboard's
+"Upcoming Releases" widget. The date under each poster is the film's
+official release date (not a showtime) — a film that has been playing for
+weeks keeps its original release date.
 
 ## Known limitations (v1)
 
 - One cinema at a time per installation of the integration.
-- Only today's now-playing list: no showtimes yet (planned for a future
-  version).
+- One day at a time (today, tomorrow, or in 7 days): no sliding window and
+  no showtimes yet (planned for a future version).
 - The cinema list is a hand-maintained static list (see the repository's
   README): a brand-new UGC cinema may not appear in it yet.
 

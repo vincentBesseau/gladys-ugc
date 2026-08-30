@@ -40,7 +40,7 @@ test('parses films from the showings HTML fragment', async () => {
   assert.equal(spiderMan.overview, undefined);
 });
 
-test("requests the given cinema ID and today's date", async () => {
+test("requests the given cinema ID and today's date by default", async () => {
   let calledUrl;
   globalThis.fetch = async (url) => {
     calledUrl = url;
@@ -50,7 +50,21 @@ test("requests the given cinema ID and today's date", async () => {
   await fetchNowPlaying('42');
 
   assert.match(calledUrl.toString(), /cinemaId=42/);
-  assert.match(calledUrl.toString(), /date=\d{4}-\d{2}-\d{2}/);
+  assert.match(calledUrl.toString(), new RegExp(`date=${new Date().toISOString().slice(0, 10)}`));
+});
+
+test('requests a future date when a day offset is given', async () => {
+  let calledUrl;
+  globalThis.fetch = async (url) => {
+    calledUrl = url;
+    return { ok: true, text: async () => '' };
+  };
+
+  await fetchNowPlaying('42', 7);
+
+  const expected = new Date();
+  expected.setDate(expected.getDate() + 7);
+  assert.match(calledUrl.toString(), new RegExp(`date=${expected.toISOString().slice(0, 10)}`));
 });
 
 test('returns an empty array when the fragment has no film block', async () => {

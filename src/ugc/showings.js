@@ -15,8 +15,10 @@ import { parseFrenchDate } from './parseFrenchDate.js';
 
 const logger = createLogger({ name: 'ugc-showings' });
 
-function todayIsoDate() {
-  return new Date().toISOString().slice(0, 10);
+function isoDateWithOffset(dayOffset) {
+  const date = new Date();
+  date.setDate(date.getDate() + dayOffset);
+  return date.toISOString().slice(0, 10);
 }
 
 function textOf(el) {
@@ -95,14 +97,15 @@ function extractSynopsis(block) {
 }
 
 /**
- * Fetch and parse the films currently playing at a UGC cinema.
+ * Fetch and parse the films playing at a UGC cinema on a given day.
  * @param {string} cinemaId
+ * @param {number} [dayOffset] - 0 = today (default), 1 = tomorrow, etc.
  * @returns {Promise<Array<{id: string, title: string, releaseDate: string, overview?: string, posterUrl?: string, sourceUrl: string}>>}
  */
-export async function fetchNowPlaying(cinemaId) {
+export async function fetchNowPlaying(cinemaId, dayOffset = 0) {
   const html = await ugcGet('showingsCinemaAjaxAction!getShowingsForCinemaPage.action', {
     cinemaId,
-    date: todayIsoDate(),
+    date: isoDateWithOffset(dayOffset),
   });
 
   const root = parse(html);
@@ -110,7 +113,7 @@ export async function fetchNowPlaying(cinemaId) {
 
   const movies = blocks.map(parseFilmBlock).filter(Boolean);
 
-  logger.info(`UGC cinema ${cinemaId}: ${movies.length} film(s) currently playing`);
+  logger.info(`UGC cinema ${cinemaId}: ${movies.length} film(s) playing (day offset ${dayOffset})`);
 
   return movies;
 }
