@@ -1,0 +1,338 @@
+[
+  {
+    "id": "27",
+    "name": "UGC Ciné Cité Mondeville",
+    "address": "Centre Commercial Mondeville 2 - Route Nationale 13 14120 MONDEVILLE",
+    "postalCode": "14120",
+    "city": "MONDEVILLE"
+  },
+  {
+    "id": "56",
+    "name": "UGC Montaudran",
+    "address": "Place Marcel Bouilloux-Lafont 31400 TOULOUSE",
+    "postalCode": "31400",
+    "city": "TOULOUSE"
+  },
+  {
+    "id": "1",
+    "name": "UGC Ciné Cité Bordeaux Gambetta",
+    "address": "13-15, rue Georges Bonnac 33000 BORDEAUX",
+    "postalCode": "33000",
+    "city": "BORDEAUX"
+  },
+  {
+    "id": "57",
+    "name": "UGC Ciné Cité Bassins à Flot",
+    "address": "6 quai Virginie Hériot, Bassins N°2 33300 BORDEAUX",
+    "postalCode": "33300",
+    "city": "BORDEAUX"
+  },
+  {
+    "id": "42",
+    "name": "UGC Talence",
+    "address": "Allée du 7ème art 33400 TALENCE",
+    "postalCode": "33400",
+    "city": "TALENCE"
+  },
+  {
+    "id": "31",
+    "name": "UGC Ciné Cité Atlantis",
+    "address": "Pôle commercial Atlantis - Place Jean Bart 44800 SAINT HERBLAIN",
+    "postalCode": "44800",
+    "city": "SAINT HERBLAIN"
+  },
+  {
+    "id": "28",
+    "name": "UGC Nancy Saint Jean",
+    "address": "54, rue Saint Jean 54000 NANCY",
+    "postalCode": "54000",
+    "city": "NANCY"
+  },
+  {
+    "id": "29",
+    "name": "UGC Ciné Cité Ludres",
+    "address": "350, rue des Mazurots 54710 LUDRES",
+    "postalCode": "54710",
+    "city": "LUDRES"
+  },
+  {
+    "id": "46",
+    "name": "Le Majestic",
+    "address": "54 rue de Béthune 59000 LILLE",
+    "postalCode": "59000",
+    "city": "LILLE"
+  },
+  {
+    "id": "45",
+    "name": "Le Métropole",
+    "address": "26, rue des ponts de Comines 59000 LILLE",
+    "postalCode": "59000",
+    "city": "LILLE"
+  },
+  {
+    "id": "25",
+    "name": "UGC Ciné Cité Lille",
+    "address": "40, rue de Béthune 59000 LILLE",
+    "postalCode": "59000",
+    "city": "LILLE"
+  },
+  {
+    "id": "52",
+    "name": "Les Écrans",
+    "address": "4 promenade de la Fraternité – Centre commercial Saint Christophe 59200 TOURCOING",
+    "postalCode": "59200",
+    "city": "TOURCOING"
+  },
+  {
+    "id": "24",
+    "name": "UGC Ciné Cité Villeneuve d'Ascq",
+    "address": "Héronparc - 21, avenue de l'Avenir 59650 VILLENEUVE D'ASCQ",
+    "postalCode": "59650",
+    "city": "VILLENEUVE D'ASCQ"
+  },
+  {
+    "id": "30",
+    "name": "UGC Ciné Cité Strasbourg",
+    "address": "25, avenue du Rhin 67100 STRASBOURG",
+    "postalCode": "67100",
+    "city": "STRASBOURG"
+  },
+  {
+    "id": "36",
+    "name": "UGC Ciné Cité Confluence",
+    "address": "Pôle de loisirs de commerces - 112, cours Charlemagne 69002 LYON",
+    "postalCode": "69002",
+    "city": "LYON"
+  },
+  {
+    "id": "58",
+    "name": "UGC Ciné Cité Part-Dieu",
+    "address": "Centre Commercial La Part-Dieu - Niveau 3 - Les Tables 69003 LYON",
+    "postalCode": "69003",
+    "city": "LYON"
+  },
+  {
+    "id": "33",
+    "name": "UGC Astoria",
+    "address": "31, cours Vitton 69006 LYON",
+    "postalCode": "69006",
+    "city": "LYON"
+  },
+  {
+    "id": "32",
+    "name": "UGC Ciné Cité Internationale",
+    "address": "Cité Internationale - 80, quai Charles de Gaulle 69006 LYON",
+    "postalCode": "69006",
+    "city": "LYON"
+  },
+  {
+    "id": "10",
+    "name": "UGC Ciné Cité Les Halles",
+    "address": "Forum des Halles - Niveau -3 75001 PARIS",
+    "postalCode": "75001",
+    "city": "PARIS"
+  },
+  {
+    "id": "4",
+    "name": "UGC Danton",
+    "address": "99, boulevard Saint-Germain 75006 PARIS",
+    "postalCode": "75006",
+    "city": "PARIS"
+  },
+  {
+    "id": "14",
+    "name": "UGC Montparnasse",
+    "address": "83, boulevard du Montparnasse 75006 PARIS",
+    "postalCode": "75006",
+    "city": "PARIS"
+  },
+  {
+    "id": "13",
+    "name": "UGC Odéon",
+    "address": "124, boulevard Saint-Germain 75006 PARIS",
+    "postalCode": "75006",
+    "city": "PARIS"
+  },
+  {
+    "id": "15",
+    "name": "UGC Rotonde",
+    "address": "103, boulevard du Montparnasse 75006 PARIS",
+    "postalCode": "75006",
+    "city": "PARIS"
+  },
+  {
+    "id": "9",
+    "name": "UGC Opéra",
+    "address": "32, boulevard des Italiens 75009 PARIS",
+    "postalCode": "75009",
+    "city": "PARIS"
+  },
+  {
+    "id": "12",
+    "name": "UGC Ciné Cité Bercy",
+    "address": "2, cour Saint Emilion 75012 PARIS",
+    "postalCode": "75012",
+    "city": "PARIS"
+  },
+  {
+    "id": "11",
+    "name": "UGC Lyon Bastille",
+    "address": "12, rue de Lyon 75012 PARIS",
+    "postalCode": "75012",
+    "city": "PARIS"
+  },
+  {
+    "id": "5",
+    "name": "UGC Gobelins",
+    "address": "66 bis, avenue des Gobelins 75013 PARIS",
+    "postalCode": "75013",
+    "city": "PARIS"
+  },
+  {
+    "id": "7",
+    "name": "UGC Ciné Cité Maillot",
+    "address": "2, place de la Porte Maillot - Palais des Congrès - Niveau -1 75017 PARIS",
+    "postalCode": "75017",
+    "city": "PARIS"
+  },
+  {
+    "id": "37",
+    "name": "UGC Ciné Cité Paris 19",
+    "address": "166, Boulevard Macdonald 75019 PARIS",
+    "postalCode": "75019",
+    "city": "PARIS"
+  },
+  {
+    "id": "39",
+    "name": "UGC Le Majestic",
+    "address": "11 Place Henri IV 77100 MEAUX",
+    "postalCode": "77100",
+    "city": "MEAUX"
+  },
+  {
+    "id": "41",
+    "name": "UGC Cyrano",
+    "address": "7 Rue Rameau 78000 VERSAILLES",
+    "postalCode": "78000",
+    "city": "VERSAILLES"
+  },
+  {
+    "id": "40",
+    "name": "UGC Roxane",
+    "address": "6 Rue Saint-Simon 78000 VERSAILLES",
+    "postalCode": "78000",
+    "city": "VERSAILLES"
+  },
+  {
+    "id": "48",
+    "name": "C2L Saint Germain",
+    "address": "25-27-29 rue du Vieux Marché 78100 SAINT GERMAIN EN LAYE",
+    "postalCode": "78100",
+    "city": "SAINT GERMAIN EN LAYE"
+  },
+  {
+    "id": "43",
+    "name": "UGC Ciné Cité Vélizy",
+    "address": "Centre Commercial Régional Vélizy 2 78140 VELIZY VILLACOUBLAY",
+    "postalCode": "78140",
+    "city": "VELIZY VILLACOUBLAY"
+  },
+  {
+    "id": "44",
+    "name": "UGC Ciné Cité Parly",
+    "address": "2 Avenue Charles de Gaulle 78150 LE CHESNAY",
+    "postalCode": "78150",
+    "city": "LE CHESNAY"
+  },
+  {
+    "id": "6",
+    "name": "UGC Ciné Cité SQY Ouest",
+    "address": "1, avenue de la Source de la Bièvre 78180 MONTIGNY-LE-BRETONNEUX",
+    "postalCode": "78180",
+    "city": "MONTIGNY-LE-BRETONNEUX"
+  },
+  {
+    "id": "54",
+    "name": "C2L Poissy",
+    "address": "112 Rue du Général de Gaulle 78300 POISSY",
+    "postalCode": "78300",
+    "city": "POISSY"
+  },
+  {
+    "id": "55",
+    "name": "UGC Plaisir",
+    "address": "Centre Commercial Mon Grand Plaisir - 1170 Avenue de Saint-Germain 78370 PLAISIR",
+    "postalCode": "78370",
+    "city": "PLAISIR"
+  },
+  {
+    "id": "49",
+    "name": "Le Cin'Hoche",
+    "address": "6 rue Hoche 78500 SARTROUVILLE",
+    "postalCode": "78500",
+    "city": "SARTROUVILLE"
+  },
+  {
+    "id": "47",
+    "name": "Le Central",
+    "address": "Square de la Mairie 91190 GIF SUR YVETTE",
+    "postalCode": "91190",
+    "city": "GIF SUR YVETTE"
+  },
+  {
+    "id": "20",
+    "name": "UGC Ciné Cité La Défense",
+    "address": "Centre Commercial Les Quatre Temps 92092 PARIS-LA-DEFENSE",
+    "postalCode": "92092",
+    "city": "PARIS-LA-DEFENSE"
+  },
+  {
+    "id": "59",
+    "name": "UGC Issy-les-Moulineaux",
+    "address": "8 Promenade Cœur de Ville 92130 Issy-les-Moulineaux",
+    "postalCode": "92130",
+    "city": "Issy-les-Moulineaux"
+  },
+  {
+    "id": "18",
+    "name": "UGC Ciné Cité Rosny",
+    "address": "Centre Commercial Rosny 2 - 16, rue Conrad Adenauer 93110 ROSNY SOUS BOIS",
+    "postalCode": "93110",
+    "city": "ROSNY SOUS BOIS"
+  },
+  {
+    "id": "19",
+    "name": "UGC Ciné Cité Noisy-le-Grand",
+    "address": "Centre Commercial Arcades BP200 93193 NOISY-LE-GRAND",
+    "postalCode": "93193",
+    "city": "NOISY-LE-GRAND"
+  },
+  {
+    "id": "38",
+    "name": "UGC Ciné Cité O Parinor",
+    "address": "Centre Commercial O Parinor Le Haut de Galy 93600 AULNAY SOUS BOIS",
+    "postalCode": "93600",
+    "city": "AULNAY SOUS BOIS"
+  },
+  {
+    "id": "21",
+    "name": "UGC Ciné Cité Créteil",
+    "address": "Centre Commercial Créteil Soleil 94000 CRETEIL",
+    "postalCode": "94000",
+    "city": "CRETEIL"
+  },
+  {
+    "id": "16",
+    "name": "UGC Ciné Cité Cergy-le-Haut",
+    "address": "8, place des 3 Gares 95800 CERGY-LE-HAUT",
+    "postalCode": "95800",
+    "city": "CERGY-LE-HAUT"
+  },
+  {
+    "id": "17",
+    "name": "UGC Enghien",
+    "address": "38, rue du Général de Gaulle 95880 ENGHIEN-LES-BAINS",
+    "postalCode": "95880",
+    "city": "ENGHIEN-LES-BAINS"
+  }
+]
