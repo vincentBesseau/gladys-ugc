@@ -1,33 +1,42 @@
 # gladys-ugc
 
+[![Latest version](https://img.shields.io/github/v/tag/vincentBesseau/gladys-ugc?label=version)](https://github.com/vincentBesseau/gladys-ugc/tags)
+[![CI](https://github.com/vincentBesseau/gladys-ugc/actions/workflows/ci.yml/badge.svg)](https://github.com/vincentBesseau/gladys-ugc/actions/workflows/ci.yml)
+[![Docker pulls](https://ghcr-badge.elias.eu.org/shield/vincentBesseau/gladys-ugc/gladys-ugc)](https://github.com/vincentBesseau/gladys-ugc/pkgs/container/gladys-ugc)
+[![License: Apache-2.0](https://img.shields.io/badge/license-Apache--2.0-blue)](https://www.apache.org/licenses/LICENSE-2.0)
+[![Gladys](https://img.shields.io/badge/gladys-%3E%3D4.90.0-6f42c1)](https://gladysassistant.com)
+
 UGC cinema integration for [Gladys Assistant](https://gladysassistant.com):
 movies currently playing at your UGC cinema, shown in the "Upcoming Releases"
 widget (Gladys core contract B.19, `movies` external-integration type).
 
-## Why UGC only
+## Why UGC first
 
 This started as a search for one cinema integration covering the major French
 chains (AlloCiné, Pathé, UGC, CGR). Each lead was checked against the same
 bar — no paid API, no credential extracted from a decompiled app, no bypass
-of anti-bot protection — and only UGC cleared it:
+of anti-bot protection:
 
-- **AlloCiné**'s mobile GraphQL API requires reusing a hardcoded token
-  extracted from decompiling their app. Ruled out.
-- **Pathé**'s site actively fingerprints and blocks non-browser HTTP clients
-  (Akamai Bot Manager, verified live: a plain `fetch()` gets a 403 that a
-  real browser does not). Getting past that means impersonating a browser,
-  which is bot-detection bypass. Ruled out.
-- **CGR**'s own site has no live per-cinema showtimes endpoint of its own; it
-  sources its "now playing" data at build time from a third-party syndicated
-  database. Not a clean target either.
 - **UGC**'s cinema pages call a plain, unauthenticated, first-party AJAX
   endpoint (`ugc.fr/showingsCinemaAjaxAction!getShowingsForCinemaPage.action`)
   — verified live with a fresh HTTP client, no cookie, no session, no
-  bot-block. This is the same endpoint `ugc.fr` calls for every visitor.
+  bot-block. This is the same endpoint `ugc.fr` calls for every visitor, and
+  the cleanest of the four to start with — hence this integration first.
+- **AlloCiné**'s mobile GraphQL API requires reusing a hardcoded token
+  extracted from decompiling their app. Ruled out.
+- **CGR** first looked like it had no live per-cinema showtimes endpoint of
+  its own. A deeper look later found otherwise: `cgrcinemas.fr` actually
+  exposes a clean, first-party JSON API, no auth needed — see
+  [`gladys-cgr`](https://github.com/vincentBesseau/gladys-cgr).
+- **Pathé**'s rendered pages are behind Akamai Bot Manager (verified live: a
+  plain `fetch()` gets a 403 a real browser does not get), but the JSON API
+  those same pages call underneath is not — see
+  [`gladys-pathe`](https://github.com/vincentBesseau/gladys-pathe) for the
+  full reasoning, including a User-Agent judgment call that integration
+  documents in detail.
 
-If Pathé or CGR later expose an equally clean source, they belong in their
-own separate integration (`gladys-pathe`, `gladys-cgr`, ...), not bolted onto
-this one — one integration per chain, matching how `gladys-ugc` is scoped.
+One integration per chain, matching how this one is scoped — see
+[Related integrations](#related-integrations) below.
 
 ## What it does
 
@@ -98,6 +107,13 @@ JSON.stringify(
 
 Then re-derive `postalCode`/`city` from each `address` (last `NNNNN CITY`
 token) and re-sort by postal code, e.g. with a short one-off script.
+
+## Related integrations
+
+Same chain-by-chain approach, one repo per cinema chain:
+
+- [`gladys-cgr`](https://github.com/vincentBesseau/gladys-cgr) — CGR
+- [`gladys-pathe`](https://github.com/vincentBesseau/gladys-pathe) — Pathé
 
 ## Publishing checklist
 
