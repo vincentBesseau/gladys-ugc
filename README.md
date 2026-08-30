@@ -33,12 +33,16 @@ this one — one integration per chain, matching how `gladys-ugc` is scoped.
 
 - Configure one UGC cinema (its numeric ID).
 - `movies.getUpcoming` returns the films currently playing there today,
-  parsed from `ugc.fr`'s own public HTML.
+  parsed from `ugc.fr`'s own public HTML, each with its trailer (when
+  `ugc.fr` has one, fetched from its `filmTrailerAjaxAction` endpoint) and
+  today's showtimes at that cinema (`movie.showtimes`, Gladys core contract
+  B.19) — both come from the same page, no extra scraping technique needed.
 - A **Find my cinema** action searches a hand-maintained static list of UGC
   cinemas (there is no dynamic "select" field type in Gladys for anything
   other than devices — see `docs/fr.md` / `docs/en.md`).
 
-Showtimes (which session, at what time) are out of scope for v1.
+A day picker (tomorrow, in a week, ...) was tried and reverted: v1 only
+covers today's films and showtimes.
 
 ## Development
 

@@ -26,13 +26,16 @@ d'accès public que le site utilise déjà pour lui-même.
    **Identifiant du cinéma**, puis enregistrez.
 
 Les films actuellement à l'affiche dans ce cinéma apparaissent alors dans le
-widget "Prochaines sorties" du tableau de bord.
+widget "Prochaines sorties" du tableau de bord. En cliquant sur une affiche,
+la fiche du film affiche sa bande-annonce (quand ugc.fr en propose une) et un
+tableau des horaires de séances du jour dans ce cinéma (heure et version,
+VF/VOST).
 
 ## Limites connues (v1)
 
 - Un seul cinéma à la fois par installation de l'intégration.
-- Uniquement les films à l'affiche aujourd'hui : pas encore d'horaires de
-  séances (prévu pour une version future).
+- Uniquement les films et horaires du jour même (pas de vue sur demain ou les
+  jours suivants).
 - La liste des cinémas est une liste statique maintenue à la main (voir le
   README du dépôt) : un nouveau cinéma UGC peut ne pas encore y apparaître.
 

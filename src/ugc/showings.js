@@ -12,8 +12,14 @@ import { createLogger } from '@gladysassistant/integration-sdk';
 import { ugcGet } from './client.js';
 import { decodeHtmlEntities } from './decodeHtmlEntities.js';
 import { parseFrenchDate } from './parseFrenchDate.js';
+import { fetchTrailerUrl } from './trailers.js';
 
 const logger = createLogger({ name: 'ugc-showings' });
+
+// Movies are enriched with a trailer one HTTP call each: bounded so a
+// cinema with 50+ films still resolves comfortably within the 15s ack
+// budget Gladys allows for movies.getUpcoming.
+const TRAILER_FETCH_CONCURRENCY = 10;
 
 function todayIsoDate() {
   return new Date().toISOString().slice(0, 10);
@@ -35,6 +41,36 @@ function fieldAfterLabel(root, label) {
   return textOf(paragraph?.querySelector('span'));
 }
 
+/**
+ * Every screening button on the page (`data-filmid`, `data-seancehour`,
+ * `data-version`) carries its own film id, regardless of where it sits in
+ * the DOM relative to that film's synopsis block — grouping by attribute is
+ * simpler and more robust than relying on a specific nesting.
+ * @returns {Map<string, Array<{time: string, version?: string}>>}
+ */
+function groupShowtimesByFilmId(root) {
+  const showtimesByFilmId = new Map();
+
+  root.querySelectorAll('[data-filmid][data-seancehour]').forEach((button) => {
+    const filmId = button.getAttribute('data-filmid');
+    const time = button.getAttribute('data-seancehour');
+
+    if (!filmId || !time) {
+      return;
+    }
+
+    const version = button.getAttribute('data-version') || undefined;
+
+    if (!showtimesByFilmId.has(filmId)) {
+      showtimesByFilmId.set(filmId, []);
+    }
+
+    showtimesByFilmId.get(filmId).push(version ? { time, version } : { time });
+  });
+
+  return showtimesByFilmId;
+}
+
 function parseFilmBlock(block) {
   const rawId = block.id?.replace('bloc-showing-film-', '');
   const id = rawId && /^\d+$/.test(rawId) ? rawId : null;
@@ -52,8 +88,8 @@ function parseFilmBlock(block) {
   const releaseDate = releaseDateRaw ? parseFrenchDate(releaseDateRaw) : null;
 
   if (!releaseDate) {
-    // Gladys requires a release date; fabricating one (e.g. "today") would be
-    // dishonest data, so this film is dropped rather than misrepresented.
+    // Gladys requires a release date; fabricating one (e.g. "today") would
+    // be dishonest data, so this film is dropped rather than misrepresented.
     logger.debug(`UGC film ${id} (${title}) has no parseable release date, skipping it`);
 
     return null;
@@ -95,9 +131,46 @@ function extractSynopsis(block) {
 }
 
 /**
- * Fetch and parse the films currently playing at a UGC cinema.
+ * Run `mapper` over `items` with at most `concurrency` calls in flight.
+ * @param {Array} items
+ * @param {number} concurrency
+ * @param {(item: any) => Promise<void>} mapper
+ */
+async function forEachWithConcurrency(items, concurrency, mapper) {
+  let nextIndex = 0;
+
+  async function worker() {
+    while (nextIndex < items.length) {
+      const current = items[nextIndex];
+      nextIndex += 1;
+      await mapper(current);
+    }
+  }
+
+  const workerCount = Math.min(concurrency, items.length);
+  await Promise.all(Array.from({ length: workerCount }, worker));
+}
+
+/**
+ * Fetch and attach a trailerUrl to every movie that has one. A missing or
+ * failed trailer lookup just leaves the field unset — never fails the batch.
+ * @param {Array<object>} movies
+ */
+async function attachTrailers(movies) {
+  await forEachWithConcurrency(movies, TRAILER_FETCH_CONCURRENCY, async (movie) => {
+    const trailerUrl = await fetchTrailerUrl(movie.id);
+
+    if (trailerUrl) {
+      movie.trailerUrl = trailerUrl;
+    }
+  });
+}
+
+/**
+ * Fetch and parse the films currently playing at a UGC cinema, including
+ * their showtimes and (best-effort) trailer.
  * @param {string} cinemaId
- * @returns {Promise<Array<{id: string, title: string, releaseDate: string, overview?: string, posterUrl?: string, sourceUrl: string}>>}
+ * @returns {Promise<Array<{id: string, title: string, releaseDate: string, overview?: string, posterUrl?: string, trailerUrl?: string, sourceUrl: string, showtimes?: Array<{time: string, version?: string}>}>>}
  */
 export async function fetchNowPlaying(cinemaId) {
   const html = await ugcGet('showingsCinemaAjaxAction!getShowingsForCinemaPage.action', {
@@ -109,6 +182,17 @@ export async function fetchNowPlaying(cinemaId) {
   const blocks = root.querySelectorAll('[id^="bloc-showing-film-"]');
 
   const movies = blocks.map(parseFilmBlock).filter(Boolean);
+
+  const showtimesByFilmId = groupShowtimesByFilmId(root);
+  movies.forEach((movie) => {
+    const showtimes = showtimesByFilmId.get(movie.id);
+
+    if (showtimes && showtimes.length > 0) {
+      movie.showtimes = showtimes;
+    }
+  });
+
+  await attachTrailers(movies);
 
   logger.info(`UGC cinema ${cinemaId}: ${movies.length} film(s) currently playing`);
 

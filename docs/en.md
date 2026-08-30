@@ -24,13 +24,14 @@ itself.
 3. Copy the numeric ID of your cinema into the **Cinema ID** field, then save.
 
 The films currently playing at that cinema then appear in the dashboard's
-"Upcoming Releases" widget.
+"Upcoming Releases" widget. Clicking a poster opens the film's detail card,
+which shows its trailer (when ugc.fr has one) and a table of today's
+showtimes at that cinema (time and version, VF/VOST).
 
 ## Known limitations (v1)
 
 - One cinema at a time per installation of the integration.
-- Only today's now-playing list: no showtimes yet (planned for a future
-  version).
+- Only today's films and showtimes (no view of tomorrow or later days).
 - The cinema list is a hand-maintained static list (see the repository's
   README): a brand-new UGC cinema may not appear in it yet.
 

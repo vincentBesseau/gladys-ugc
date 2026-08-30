@@ -22,9 +22,11 @@ const REQUEST_TIMEOUT_MS = 15_000;
  * GET one of ugc.fr's own AJAX actions and return the raw HTML/text body.
  * @param {string} action - e.g. "showingsCinemaAjaxAction!getShowingsForCinemaPage.action"
  * @param {Record<string, string>} params
+ * @param {object} [options]
+ * @param {number} [options.timeoutMs] - Overrides the default request timeout.
  * @returns {Promise<string>}
  */
-export async function ugcGet(action, params = {}) {
+export async function ugcGet(action, params = {}, { timeoutMs = REQUEST_TIMEOUT_MS } = {}) {
   const url = new URL(`${BASE_URL}/${action}`);
   for (const [key, value] of Object.entries(params)) {
     url.searchParams.set(key, value);
@@ -33,7 +35,7 @@ export async function ugcGet(action, params = {}) {
   logger.debug('ugc.fr request ->', url.toString());
 
   const response = await fetch(url, {
-    signal: AbortSignal.timeout(REQUEST_TIMEOUT_MS),
+    signal: AbortSignal.timeout(timeoutMs),
     headers: {
       // A plain, honest identification: not spoofing a browser, not hiding
       // what this is. ugc.fr answers it exactly like any other client.
