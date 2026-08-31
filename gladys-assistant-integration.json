@@ -10,7 +10,7 @@
   "docker_image": "ghcr.io/vincentbesseau/gladys-ugc:0.1.0",
   "gladys_version": ">=4.90.0",
   "categories": ["multimedia"],
-  "cover_image": "https://raw.githubusercontent.com/vincentBesseau/gladys-ugc/main/cover.png",
+  "cover_image": "https://raw.githubusercontent.com/vincentBesseau/gladys-ugc/master/cover.png",
   "transports": ["cloud"],
   "location": true,
   "config_schema": [
