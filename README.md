@@ -22,8 +22,14 @@ of anti-bot protection:
   — verified live with a fresh HTTP client, no cookie, no session, no
   bot-block. This is the same endpoint `ugc.fr` calls for every visitor, and
   the cleanest of the four to start with — hence this integration first.
-- **AlloCiné**'s mobile GraphQL API requires reusing a hardcoded token
-  extracted from decompiling their app. Ruled out.
+- **AlloCiné**'s mobile app GraphQL API was initially assumed to require a
+  hardcoded token extracted from decompiling the app, and ruled out on that
+  basis. That assumption was wrong: `allocine.fr`'s own **website** calls a
+  completely open, first-party JSON endpoint — no token, no auth, no
+  User-Agent filter at all — see
+  [`gladys-allocine`](https://github.com/vincentBesseau/gladys-allocine),
+  which also happens to be the only one of the four that covers independent
+  cinemas, not just one chain.
 - **CGR** first looked like it had no live per-cinema showtimes endpoint of
   its own. A deeper look later found otherwise: `cgrcinemas.fr` actually
   exposes a clean, first-party JSON API, no auth needed — see
@@ -131,6 +137,10 @@ Same chain-by-chain approach, one repo per cinema chain:
 
 - [`gladys-cgr`](https://github.com/vincentBesseau/gladys-cgr) — CGR
 - [`gladys-pathe`](https://github.com/vincentBesseau/gladys-pathe) — Pathé
+
+For any other cinema — independent art-house theaters included — see
+[`gladys-allocine`](https://github.com/vincentBesseau/gladys-allocine),
+which covers every French cinema through AlloCiné's own site.
 
 ## Publishing checklist
 
