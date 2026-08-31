@@ -63,13 +63,21 @@ test('parses films, their showtimes and trailer from the showings HTML fragment'
     releaseDate: '2026-08-26',
     overview: 'Tad et Sara sont désormais les heureux parents d’Oli.',
     posterUrl: 'https://www.ugc.fr/dynamique/films/89/17489/fr/poster/large/poster.jpg',
-    sourceUrl: 'https://www.ugc.fr/film.html?id=17489',
+    sourceUrl: 'https://www.ugc.fr/film.html?id=17489&cinemaId=10',
     trailerUrl: 'https://fr.vid.web.acsta.net/nmedia/tad.mp4',
     showtimes: [
       { time: '13:30', version: 'VF' },
       { time: '20:15', version: 'VOST' },
     ],
   });
+});
+
+test('pins sourceUrl to the cinema the film was fetched for, so the user lands ready to book', async () => {
+  globalThis.fetch = fetchRouter({ showingsHtml: sampleHtml });
+
+  const movies = await fetchNowPlaying('31', { now: BEFORE_ALL_FIXTURE_SHOWTIMES });
+
+  assert.equal(movies[0].sourceUrl, 'https://www.ugc.fr/film.html?id=17489&cinemaId=31');
 });
 
 test('drops a film with a release date but no screening button at all in the fragment', async () => {

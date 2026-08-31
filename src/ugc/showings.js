@@ -97,7 +97,7 @@ function groupShowtimesByFilmId(root, now = new Date()) {
   return showtimesByFilmId;
 }
 
-function parseFilmBlock(block) {
+function parseFilmBlock(block, cinemaId) {
   const rawId = block.id?.replace('bloc-showing-film-', '');
   const id = rawId && /^\d+$/.test(rawId) ? rawId : null;
 
@@ -134,7 +134,10 @@ function parseFilmBlock(block) {
     releaseDate,
     overview: overview || undefined,
     posterUrl: poster || undefined,
-    sourceUrl: `https://www.ugc.fr/film.html?id=${id}`,
+    // cinemaId pins the booking flow to the configured cinema (verified
+    // live: ugc.fr's own film page reads it), so the user lands ready to
+    // book at their cinema instead of a generic film page with none picked
+    sourceUrl: `https://www.ugc.fr/film.html?id=${id}&cinemaId=${cinemaId}`,
   };
 }
 
@@ -218,7 +221,7 @@ export async function fetchNowPlaying(cinemaId, { now = new Date() } = {}) {
   // go see today, so those are dropped here rather than shown as a poster
   // with nothing to click on.
   const movies = blocks
-    .map(parseFilmBlock)
+    .map((block) => parseFilmBlock(block, cinemaId))
     .filter(Boolean)
     .filter((movie) => {
       const showtimes = showtimesByFilmId.get(movie.id);
