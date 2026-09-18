@@ -22,6 +22,12 @@ COPY src ./src
 COPY gladys-assistant-integration.json ./
 
 ENV NODE_ENV=production
+
+# The seen-films persistence (new_film scene trigger) writes here: created
+# and owned by "node" before the volume is declared and the user switched,
+# or the write fails with EACCES (an anonymous VOLUME is root-owned by
+# default, and the supervisor's host mount inherits its permissions).
+RUN mkdir -p /data && chown node:node /data
 VOLUME ["/data"]
 
 USER node
