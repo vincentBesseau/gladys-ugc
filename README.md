@@ -4,11 +4,15 @@
 [![CI](https://github.com/vincentBesseau/gladys-ugc/actions/workflows/ci.yml/badge.svg)](https://github.com/vincentBesseau/gladys-ugc/actions/workflows/ci.yml)
 [![Docker pulls](https://ghcr-badge.elias.eu.org/shield/vincentBesseau/gladys-ugc/gladys-ugc)](https://github.com/vincentBesseau/gladys-ugc/pkgs/container/gladys-ugc)
 [![License: Apache-2.0](https://img.shields.io/badge/license-Apache--2.0-blue)](https://www.apache.org/licenses/LICENSE-2.0)
-[![Gladys](https://img.shields.io/badge/gladys-%3E%3D4.90.0-6f42c1)](https://gladysassistant.com)
+[![Gladys](https://img.shields.io/badge/gladys-%3E%3D5.0.4-6f42c1)](https://gladysassistant.com)
 
 UGC cinema integration for [Gladys Assistant](https://gladysassistant.com):
-movies currently playing at your UGC cinema, shown in the "Upcoming Releases"
-widget (Gladys core contract B.19, `movies` external-integration type).
+movies currently playing at your UGC cinema, as a dashboard widget, with a
+scene trigger for when a new film joins the program (Gladys core
+capabilities — dashboard widgets and scene triggers declared by external
+integrations, [#3109](https://github.com/GladysAssistant/Gladys/pull/3109)
+and [#3110](https://github.com/GladysAssistant/Gladys/pull/3110) — `provider`
+external-integration type).
 
 ## Why UGC first
 
@@ -47,11 +51,16 @@ One integration per chain, matching how this one is scoped — see
 ## What it does
 
 - Configure one UGC cinema (its numeric ID).
-- `movies.getUpcoming` returns the films currently playing there today,
-  parsed from `ugc.fr`'s own public HTML, each with its trailer (when
-  `ugc.fr` has one, fetched from its `filmTrailerAjaxAction` endpoint) and
-  today's showtimes at that cinema (`movie.showtimes`, Gladys core contract
-  B.19) — both come from the same page, no extra scraping technique needed.
+- A **now_playing** dashboard widget renders the films currently playing
+  there today, parsed from `ugc.fr`'s own public HTML, each with its poster,
+  trailer link (when `ugc.fr` has one, fetched from its
+  `filmTrailerAjaxAction` endpoint), a booking link and today's showtimes at
+  that cinema — all from the same page, no extra scraping technique needed.
+- A **new_film** scene trigger fires when a film not seen on a previous
+  check appears in the program, with its title, release date, today's
+  showtimes and booking link exposed as scene variables — the diffing
+  against a persisted baseline lives in the integration itself (`/data`),
+  polled twice a day.
 - A **Find my cinema** action searches a hand-maintained static list of UGC
   cinemas (there is no dynamic "select" field type in Gladys for anything
   other than devices — see `docs/fr.md` / `docs/en.md`). Left empty, it
@@ -80,18 +89,19 @@ Conventions: ESM, native `fetch` (no HTTP client dependency), `node --test`
 
 ### SDK dependency (temporary)
 
-`onMoviesGetUpcoming` and `getHouses()` were added to the official SDK in
-[GladysAssistant/integration-sdk-js#32](https://github.com/GladysAssistant/integration-sdk-js/pull/32),
-not yet merged/published at the time this integration was written.
-`package.json` points `@gladysassistant/integration-sdk` at that branch
-directly:
+`onWidgetGet`, `onWidgetGetImage`, `publishSceneEvent` and `getHouses()` —
+the primitives behind the dashboard widget and the scene trigger — are not
+in a published SDK release yet: they live on a personal fork, branch
+`widgets-and-scene-triggers`, matching the not-yet-merged Gladys core
+capabilities above. `package.json` points `@gladysassistant/integration-sdk`
+at that branch directly:
 
 ```json
-"@gladysassistant/integration-sdk": "github:vincentBesseau/integration-sdk-js#feature/movies-type"
+"@gladysassistant/integration-sdk": "github:vincentBesseau/integration-sdk-js#widgets-and-scene-triggers"
 ```
 
-Switch this back to a published `^x.y.z` version once that PR is merged and
-released.
+Switch this back to a published `^x.y.z` version once the SDK ships these
+capabilities officially.
 
 ### Refreshing the cinema list
 
@@ -144,11 +154,13 @@ which covers every French cinema through AlloCiné's own site.
 
 ## Publishing checklist
 
-- [ ] `gladys_version` in `gladys-assistant-integration.json` is a placeholder
-      (`>=4.90.0`) — set it to the actual Gladys release that ships the
-      `movies` integration type (Gladys core PR
-      [GladysAssistant/Gladys#3061](https://github.com/GladysAssistant/Gladys/pull/3061))
-      once it is released.
+- [x] `gladys_version` in `gladys-assistant-integration.json` set to
+      `>=5.0.4`, the floor for the Gladys core capabilities this integration
+      needs (dashboard widgets and scene triggers declared by external
+      integrations, [#3109](https://github.com/GladysAssistant/Gladys/pull/3109)
+      / [#3110](https://github.com/GladysAssistant/Gladys/pull/3110), both
+      open at the time of writing) — re-check once they ship in an actual
+      release.
 - [ ] Swap the SDK dependency to a published version (see above).
 - [x] Add a `cover.png` (referenced by `cover_image` in the manifest) — 800x534, under 150 KB.
 - [ ] Run **Release** (GitHub Actions) once ready to cut `v0.1.0` and publish

@@ -1,7 +1,8 @@
 # UGC
 
-Films actuellement à l'affiche dans votre cinéma UGC, affichés dans le widget
-"Prochaines sorties" de Gladys.
+Films actuellement à l'affiche dans votre cinéma UGC, sous forme de widget de
+tableau de bord, avec un déclencheur de scène pour l'ajout d'un nouveau
+film.
 
 ## Important : intégration non officielle
 
@@ -30,11 +31,19 @@ d'accès public que le site utilise déjà pour lui-même.
 Si aucune maison Gladys n'a de position renseignée, laisser le champ vide
 liste tous les cinémas UGC (comportement de repli).
 
-Les films actuellement à l'affiche dans ce cinéma apparaissent alors dans le
-widget "Prochaines sorties" du tableau de bord. En cliquant sur une affiche,
-la fiche du film affiche sa bande-annonce (quand ugc.fr en propose une) et un
-tableau des horaires de séances du jour dans ce cinéma (heure et version,
-VF/VOST).
+Ajoutez le widget **À l'affiche** de l'intégration à un tableau de bord
+Gladys pour voir les films actuellement à l'affiche dans ce cinéma :
+affiche, lien de réservation, horaires de séances du jour (heure et version,
+VF/VOST) et, quand ugc.fr en propose une, un lien vers la bande-annonce.
+
+## Déclencheur de scène
+
+L'intégration déclare aussi un déclencheur de scène **Nouveau film ajouté** :
+créez une scène avec ce déclencheur pour réagir quand un film jamais vu
+auparavant apparaît dans le programme (envoyer un message, par exemple). Le
+déclencheur expose le titre du film, sa date de sortie, les horaires du jour
+et le lien de réservation comme variables de scène. L'intégration vérifie
+l'apparition de nouveaux films deux fois par jour.
 
 ## Limites connues (v1)
 
