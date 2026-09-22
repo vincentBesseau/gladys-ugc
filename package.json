@@ -16,7 +16,7 @@
     "node": ">=22"
   },
   "dependencies": {
-    "@gladysassistant/integration-sdk": "github:vincentBesseau/integration-sdk-js#widgets-and-scene-triggers",
+    "@gladysassistant/integration-sdk": "^0.14.0",
     "node-html-parser": "^9.0.2"
   },
   "devDependencies": {
