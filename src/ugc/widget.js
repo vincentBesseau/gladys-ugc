@@ -33,7 +33,15 @@ function buildNowPlayingContent(movies) {
     return { version: 1, ttl_seconds: 900, components: [] };
   }
 
-  const items = movies.slice(0, 12).map((movie) => {
+  // The grid caps at 12 cards (dashboard-widgets.md: card-list "1-12 in grid"),
+  // and a widget can carry only one focal component, so a second card-list
+  // would be dropped by the core. A cinema can run more than 12 films, so the
+  // films past the cap would silently vanish. Rather than leave the user
+  // guessing what is missing, name them in a short body line under the grid
+  // (the core renders a `text`/`body` in the slot below the focal component).
+  const MAX_GRID_ITEMS = 12;
+
+  const items = movies.slice(0, MAX_GRID_ITEMS).map((movie) => {
     const links = [{ url: movie.sourceUrl, label: { en: 'Book', fr: 'Réserver' } }];
 
     if (movie.trailerUrl) {
@@ -60,13 +68,34 @@ function buildNowPlayingContent(movies) {
     return item;
   });
 
+  const components = [{ type: 'card-list', display: 'grid', items }];
+
+  const hidden = movies.slice(MAX_GRID_ITEMS);
+
+  if (hidden.length > 0) {
+    const titles = hidden.map((movie) => movie.title).join(', ');
+    const plural = hidden.length > 1 ? 's' : '';
+
+    // The core trims this to the `body` bound (300 chars) with an ellipsis, so
+    // on a very long overflow the last titles are dropped cleanly rather than
+    // overflowing the card.
+    components.push({
+      type: 'text',
+      variant: 'body',
+      text: {
+        en: `+${hidden.length} more film${plural} not shown: ${titles}`,
+        fr: `+${hidden.length} film${plural} non affiché${plural} : ${titles}`,
+      },
+    });
+  }
+
   return {
     version: 1,
     // Today's program changes on its own schedule (new showtimes, films
     // leaving the bill) — 15 min keeps the card fresh without hammering
     // ugc.fr on every dashboard render.
     ttl_seconds: 900,
-    components: [{ type: 'card-list', display: 'grid', items }],
+    components,
   };
 }
 

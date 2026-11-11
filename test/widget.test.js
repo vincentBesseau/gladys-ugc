@@ -91,6 +91,54 @@ test('buildNowPlayingContent caps items at 12, the grid content-budget bound', (
   assert.equal(items.length, 12);
 });
 
+test('buildNowPlayingContent lists the films past the grid cap in a body line', () => {
+  const movies = Array.from({ length: 15 }).map((value, index) => ({
+    id: String(index),
+    title: `Movie ${index}`,
+    releaseDate: '2026-01-01',
+    sourceUrl: `https://example.test/${index}`,
+  }));
+
+  const { components } = buildNowPlayingContent(movies);
+
+  assert.equal(components.length, 2);
+  assert.equal(components[0].type, 'card-list');
+
+  const note = components[1];
+  assert.equal(note.type, 'text');
+  assert.equal(note.variant, 'body');
+  assert.equal(note.text.fr, '+3 films non affichés : Movie 12, Movie 13, Movie 14');
+  assert.equal(note.text.en, '+3 more films not shown: Movie 12, Movie 13, Movie 14');
+});
+
+test('buildNowPlayingContent uses the singular when exactly one film is hidden', () => {
+  const movies = Array.from({ length: 13 }).map((value, index) => ({
+    id: String(index),
+    title: `Movie ${index}`,
+    releaseDate: '2026-01-01',
+    sourceUrl: `https://example.test/${index}`,
+  }));
+
+  const note = buildNowPlayingContent(movies).components[1];
+
+  assert.equal(note.text.fr, '+1 film non affiché : Movie 12');
+  assert.equal(note.text.en, '+1 more film not shown: Movie 12');
+});
+
+test('buildNowPlayingContent adds no overflow line at or below the 12-film cap', () => {
+  const movies = Array.from({ length: 12 }).map((value, index) => ({
+    id: String(index),
+    title: `Movie ${index}`,
+    releaseDate: '2026-01-01',
+    sourceUrl: `https://example.test/${index}`,
+  }));
+
+  const { components } = buildNowPlayingContent(movies);
+
+  assert.equal(components.length, 1);
+  assert.equal(components[0].type, 'card-list');
+});
+
 test('resolvePosterUrl returns the poster URL published for a previously-built item, and undefined for an unknown key', () => {
   const movie = {
     id: '999',
