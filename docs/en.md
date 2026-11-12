@@ -33,6 +33,12 @@ films currently playing at that cinema: poster, a booking link, today's
 showtimes (time and version, VF/VOST) and, when ugc.fr has one, a trailer
 link.
 
+To follow **several cinemas** (up to 5), add them in the integration
+configuration (the **More cinemas** section), each with its name and ID. Then
+add one **now_playing** widget per cinema: each widget's **Cinema** setting
+chooses which one to show (_Cinema 1_ is the main one, _2–5_ the extra cinemas).
+The configured name is used as the widget title.
+
 ## Scene trigger
 
 The integration also declares a **new_film** scene trigger: create a scene

@@ -36,6 +36,13 @@ Gladys pour voir les films actuellement à l'affiche dans ce cinéma :
 affiche, lien de réservation, horaires de séances du jour (heure et version,
 VF/VOST) et, quand ugc.fr en propose une, un lien vers la bande-annonce.
 
+Pour suivre **plusieurs cinémas** (jusqu'à 5), renseignez-les dans la
+configuration de l'intégration (section **Cinémas supplémentaires**), chacun
+avec son nom et son identifiant. Ajoutez ensuite un widget **À l'affiche** par
+cinéma : le réglage **Cinéma** de chaque widget choisit lequel afficher
+(_Cinéma 1_ est le principal, _2 à 5_ les cinémas supplémentaires). Le nom
+configuré s'affiche comme titre du widget.
+
 ## Déclencheur de scène
 
 L'intégration déclare aussi un déclencheur de scène **Nouveau film ajouté** :
