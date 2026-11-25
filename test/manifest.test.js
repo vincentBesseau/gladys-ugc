@@ -1,0 +1,17 @@
+import { test } from 'node:test';
+import assert from 'node:assert/strict';
+import { readFileSync } from 'node:fs';
+
+const manifest = JSON.parse(
+  readFileSync(new URL('../gladys-assistant-integration.json', import.meta.url), 'utf8'),
+);
+
+test('the catalog countries: France, which needs Gladys >= 5.3.0', () => {
+  // The cinemas come from ugc.fr, the French site of UGC (the Belgian ones are on ugc.be).
+  assert.deepEqual(manifest.countries, ['FR']);
+  const [major, minor] = manifest.gladys_version
+    .match(/>=\s*(\d+)\.(\d+)/)
+    .slice(1)
+    .map(Number);
+  assert.ok(major > 5 || (major === 5 && minor >= 3), 'countries needs Gladys 5.3.0');
+});
